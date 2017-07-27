@@ -2,7 +2,7 @@ const config = require( "./index" );
 const mongoose = require( "mongoose" );
 
 module.exports = function( app ) {
-    mongoose.connect( config.mongoUrl );
+    mongoose.connect( config.mongoUrl, { useMongoClient: true } );
     mongoose.Promise = global.Promise;
 
     process.on( "SIGINT", cleanup );
