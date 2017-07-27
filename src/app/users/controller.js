@@ -9,15 +9,15 @@ exports.register = ( req, res ) => {
     let user = req.user;
     if ( user ) {
         res.preconditionFailed( "existing_user" );
-    } else {
-        user = new User( req.body );
-        user.save( function( err, savedUser ) {
-            if ( err ) {
-                res.validationError( err );
-            } else {
-                res.success( extractObject(
-                    savedUser,
-                    [ "id", "name", "age", "sex", "username", "password" ] ) );
+    }
+    user = new User( req.body );
+    user.save( function( err, savedUser ) {
+        if ( err ) {
+            return res.validationError( err );
+        }
+        return res.success( extractObject(
+            savedUser,
+            [ "id", "name", "age", "sex", "username" ] ) );
             }
         } );
     }
@@ -34,23 +34,21 @@ exports.login = ( req, res ) => {
 
     if ( user ) {
         if ( user.password !== password ) {
-            res.json( {
+            return res.json( {
                 success: false,
                 message: "Authentication failed. Wrong password.",
             } );
-        } else {
-            const token = jwt.sign( user.toObject(), SECRET, { expiresIn: 1440 } );
-            res.json( {
-                success: true,
-                token,
-            } );
         }
-    } else {
-        res.json( {
-            success: false,
-            message: "Authentication failed. User not found.",
+        const token = jwt.sign( user.toObject(), SECRET, { expiresIn: 1440 } );
+        return res.json( {
+            success: true,
+            token,
         } );
     }
+    return res.json( {
+        success: false,
+        message: "Authentication failed. User not found.",
+    } );
 };
 
 exports.edit = ( req, res ) => {
@@ -65,12 +63,11 @@ exports.edit = ( req, res ) => {
 
     user.save( function( err, savedUser ) {
         if ( err ) {
-            res.validationError( err );
-        } else {
-            res.success( extractObject(
-                savedUser,
-                [ "id", "name", "age", "sex" ] ) );
+            return res.validationError( err );
         }
+        return res.success( extractObject(
+            savedUser,
+            [ "id", "name", "age", "sex" ] ) );
     } );
 };
 
