@@ -39,10 +39,7 @@ exports.login = ( req, res ) => {
                 message: "Authentication failed. Wrong password.",
             } );
         } else {
-            const token = jwt.sign( user, SECRET, {
-                expiresIn: 1440,
-            } );
-
+            const token = jwt.sign( user.toObject(), SECRET, { expiresIn: 1440 } );
             res.json( {
                 success: true,
                 token,

@@ -14,11 +14,9 @@ module.exports = function( req, res, next ) {
                     message: "Failed to authenticate token.",
                 } );
             }
-
-            req.user = decoded._doc; // eslint-disable-line no-underscore-dangle
+            req.user = decoded;
             return next( );
         } );
     }
-
     return res.unauthorized( );
 };
