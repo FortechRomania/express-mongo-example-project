@@ -1,4 +1,5 @@
 const mongoose = require( "mongoose" );
+
 const User = mongoose.model( "User" );
 
 module.exports = function( req, res, next ) {
@@ -10,7 +11,7 @@ module.exports = function( req, res, next ) {
     return User.findOne(
         { id },
         function( err, user ) {
-            if( err ) {
+            if ( err ) {
                 return res.serverError( );
             }
             req.user = user;
