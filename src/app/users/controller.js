@@ -18,7 +18,6 @@ exports.register = ( req, res ) => {
         return res.success( extractObject(
             savedUser,
             [ "id", "name", "age", "sex", "username" ] ) );
-            }
         } );
     }
 };
