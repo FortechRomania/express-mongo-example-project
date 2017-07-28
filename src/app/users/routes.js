@@ -1,10 +1,7 @@
 require( "./model" );
-const controller = require( "./controller" );
-
 const validateToken = require( "../../middlewares/validateToken" );
+const controller = require( "./controller" );
 const authorize = require( "../../middlewares/authorize" );
-const setUser = require( "../../middlewares/setUser" );
-// add other middlewares that are used
 
 const express = require( "express" );
 
@@ -18,7 +15,7 @@ const router = express.Router( );
 
 /**
 *    @apiGroup User
-*    @api {post} /users/registration Adding an user to the db.
+*    @api {post} /registration Adding an user to the db.
 *    @apiParam {String} id  User ID required.
 *    @apiParam {String} name  Mandatory name.
 *    @apiParam {Number} age  Mandatory age. Minimum 18.
@@ -35,11 +32,11 @@ const router = express.Router( );
 *           }
 *      }
 */
-router.post( "/registration", setUser, controller.register );
+router.post( "/registration", authorize, controller.register );
 
 /**
 *    @apiGroup User
-*    @api {post} /users/login User login route.
+*    @api {post} /login User login route.
 *    @apiParam {String} id  User ID required.
 *    @apiParam {String} username  User username required.
 *    @apiParam {String} password  User password required.
@@ -50,11 +47,11 @@ router.post( "/registration", setUser, controller.register );
 *           }
 *      }
 */
-router.post( "/login", setUser, controller.login );
+router.post( "/login", authorize, controller.login );
 
 /**
 *    @apiGroup User
-*    @api {put} /users/edit Edit the profile and filtering options.
+*    @api {put} /edit Edit the profile and filtering options.
 *    @apiDescription Useful to change profile information
 *    @apiParam {String} id  User ID required.
 *    @apiParam {String} name  Mandatory name.
@@ -65,7 +62,7 @@ router.put( "/edit", authorize, validateToken, controller.edit );
 
 /**
 *    @apiGroup User
-*    @api {delete} /users/delete Delete an user.
+*    @api {delete} /delete Delete an user.
 *    @apiParam {String} id  User ID required.
 *    @apiHeaderExample Example header
 *       {
