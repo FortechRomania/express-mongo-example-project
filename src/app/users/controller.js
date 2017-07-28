@@ -8,7 +8,7 @@ const SECRET = "superSuperSecret";
 exports.register = ( req, res ) => {
     let user = req.user;
     if ( user ) {
-        res.preconditionFailed( "existing_user" );
+        return res.preconditionFailed( "existing_user" );
     }
     user = new User( req.body );
     user.save( function( err, savedUser ) {
@@ -24,8 +24,7 @@ exports.register = ( req, res ) => {
 exports.login = ( req, res ) => {
     const user = req.user;
     if ( !req.body.password ) {
-        res.status( 400 ).send( "password required" );
-        return;
+        return res.status( 400 ).send( "password required" );
     }
 
     const password = req.body.password;
