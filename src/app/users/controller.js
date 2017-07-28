@@ -8,16 +8,18 @@ const SECRET = "superSuperSecret";
 exports.register = ( req, res ) => {
     let user = req.user;
     if ( user ) {
-        return res.preconditionFailed( "existing_user" );
+        res.preconditionFailed( "existing_user" );
+        return;
     }
     user = new User( req.body );
     user.save( function( err, savedUser ) {
         if ( err ) {
-            return res.validationError( err );
+            res.validationError( err );
+        } else {
+            res.success( extractObject(
+                savedUser,
+                [ "id", "name", "age", "sex", "username" ] ) );
         }
-        return res.success( extractObject(
-            savedUser,
-            [ "id", "name", "age", "sex", "username" ] ) );
     } );
 };
 
