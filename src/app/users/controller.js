@@ -18,12 +18,13 @@ exports.register = ( req, res ) => {
     user.save( function( err, savedUser ) {
         if ( err ) {
             logger.error( "Validation Error on user.saved: ", err );
-            return res.validationError( err );
+            res.validationError( err );
+        } else {
+            logger.info( "User saved with success!" );
+            res.success( extractObject(
+                savedUser,
+                [ "id", "name", "age", "sex", "username" ] ) );
         }
-        logger.info( "User saved with success!" );
-        return res.success( extractObject(
-            savedUser,
-            [ "id", "name", "age", "sex", "username" ] ) );
     } );
 };
 
