@@ -46,6 +46,7 @@ exports.login = ( req, res ) => {
         success: false,
         message: "Authentication failed. User not found.",
     } );
+    return res;
 };
 
 exports.edit = ( req, res ) => {
