@@ -9,12 +9,11 @@ exports.create = ( req, res ) => {
     article.authodId = user.id;
     article.save( function( err, createdArticle ) {
         if ( err ) {
-            res.validationError( err );
-        } else {
-            res.success( utilities.extractObject(
-                createdArticle,
-                [ "id", "title", "body" ] ) );
+            return res.validationError( err );
         }
+        return res.success( utilities.extractObject(
+            createdArticle,
+            [ "id", "title", "body" ] ) );
     } );
 };
 
@@ -31,7 +30,6 @@ exports.list = ( req, res ) => {
         if ( err ) {
             return res.notFound( );
         }
-
         return res.success( articles );
     } );
 };
@@ -39,9 +37,8 @@ exports.list = ( req, res ) => {
 exports.detail = ( req, res ) => {
     Article.findOne( { id: req.params.id }, function( err, articles ) {
         if ( err ) {
-            res.notFound( );
-        } else {
-            res.success( articles );
+            return res.notFound( );
         }
+        return res.success( articles );
     } );
 };
