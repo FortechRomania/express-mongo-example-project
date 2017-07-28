@@ -19,7 +19,6 @@ exports.register = ( req, res ) => {
             savedUser,
             [ "id", "name", "age", "sex", "username" ] ) );
         } );
-    }
 };
 
 exports.login = ( req, res ) => {
