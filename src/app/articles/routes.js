@@ -8,7 +8,7 @@ const router = express.Router( );
 // use apiDoc to generate documentation for API routes
 // Details on how to use on: http://apidocjs.com/
 // install apidoc globally: npm install apidoc -g
-// Generate documentation: apidoc -i src/ -o apidoc/ 
+// Generate documentation: apidoc -i src/ -o apidoc/
 
 /**
 *    @apiGroup Article
