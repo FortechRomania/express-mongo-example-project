@@ -1,7 +1,6 @@
 require( "./model" );
 const validateToken = require( "../../middlewares/validateToken" );
 const controller = require( "./controller" );
-const authorize = require( "../../middlewares/authorize" );
 
 const express = require( "express" );
 
@@ -31,22 +30,7 @@ const router = express.Router( );
 *           }
 *      }
 */
-router.post( "/registration", authorize, controller.register );
-
-/**
-*    @apiGroup User
-*    @api {post} /login User login route.
-*    @apiParam {String} id  User ID required.
-*    @apiParam {String} username  User username required.
-*    @apiParam {String} password  User password required.
-*    @apiExample {response} Example response:
-*       {
-*         "user": {
-*            "token": dahljkhajfhajku32974eq9kjh
-*           }
-*      }
-*/
-router.post( "/login", authorize, controller.login );
+router.post( "/registration", controller.register );
 
 /**
 *    @apiGroup User
@@ -57,7 +41,7 @@ router.post( "/login", authorize, controller.login );
 *    @apiParam {Number} age  Mandatory age. Minimum 18.
 *    @apiParam {String} sex  Mandatory sex.
 */
-router.put( "/edit", authorize, validateToken, controller.edit );
+router.put( "/edit", validateToken, controller.edit );
 
 /**
 *    @apiGroup User
@@ -68,6 +52,6 @@ router.put( "/edit", authorize, validateToken, controller.edit );
 *           id:123456789
 *       }
 */
-router.delete( "/delete", authorize, validateToken, controller.delete );
+router.delete( "/delete", validateToken, controller.delete );
 
 module.exports = router;

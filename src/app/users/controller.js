@@ -1,11 +1,9 @@
-const jwt = require( "jsonwebtoken" );
 const mongoose = require( "mongoose" );
 
 const extractObject = require( "../../utilities" ).extractObject;
 const logger = require( "../../utilities/logger" );
 
 const User = mongoose.model( "User" );
-const SECRET = "superSuperSecret";
 
 exports.register = ( req, res ) => {
     let user = req.user;
@@ -25,35 +23,6 @@ exports.register = ( req, res ) => {
                 savedUser,
                 [ "id", "name", "age", "sex", "username" ] ) );
         }
-    } );
-};
-
-exports.login = ( req, res ) => {
-    const user = req.user;
-    if ( !req.body.password ) {
-        logger.error( "Password is not provided. Add it on the req.body" );
-        return res.status( 400 ).send( "password required" );
-    }
-
-    const password = req.body.password;
-
-    if ( user ) {
-        if ( user.password !== password ) {
-            return res.json( {
-                success: false,
-                message: "Authentication failed. Wrong password.",
-            } );
-        }
-        const token = jwt.sign( user.toObject(), SECRET, { expiresIn: 1440 } );
-        logger.info( "User loged in with success. Login token", token );
-        return res.json( {
-            success: true,
-            token,
-        } );
-    }
-    return res.json( {
-        success: false,
-        message: "Authentication failed. User not found.",
     } );
 };
 
