@@ -1,5 +1,7 @@
 const jwt = require( "jsonwebtoken" );
 
+const logger = require( "../utilities/logger" );
+
 const SECRET = "superSuperSecret";
 
 module.exports = function( req, res, next ) {
@@ -8,7 +10,7 @@ module.exports = function( req, res, next ) {
     if ( token ) {
         return jwt.verify( token, SECRET, function( err, decoded ) {
             if ( err ) {
-                console.log( err );
+                logger.error( err );
                 return res.json( {
                     success: false,
                     message: "Failed to authenticate token.",
