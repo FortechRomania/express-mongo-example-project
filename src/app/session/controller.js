@@ -1,35 +1,42 @@
 const jwt = require( "jsonwebtoken" );
-const md5 = require( "md5" );
-// const mongoose = require( "mongoose" );
+const mongoose = require( "mongoose" );
 
+const User = mongoose.model( "User" );
+
+const config = require( "../../config" );
 const logger = require( "../../utilities/logger" );
 
-const SECRET = "superSuperSecret";
-
 exports.login = ( req, res ) => {
-    const user = req.user;
     if ( !req.body.password ) {
-        logger.error( "Password is not provided. Add it on the req.body" );
-        return res.status( 400 ).send( "password required" );
+        res.preconditionFailed( "password required" );
+        return;
     }
 
-    const password = md5( req.body.password );
-    if ( user ) {
-        if ( user.password !== password ) {
+    if ( !req.body.username ) {
+        res.preconditionFailed( "username required" );
+        return;
+    }
+
+    User.findOne( { username: req.body.username }, function( err, user ) {
+        if ( err ) {
+            return res.json( {
+                success: false,
+                message: "Authentication failed. User not found.",
+            } );
+        }
+
+        if ( !user.checkPass( req.body.password ) ) {
             return res.json( {
                 success: false,
                 message: "Authentication failed. Wrong password.",
             } );
         }
-        const token = jwt.sign( user.toObject(), SECRET, { expiresIn: 1440 } );
+
+        const token = jwt.sign( user.toObject(), config.secret, { expiresIn: 1440 } );
         logger.info( "User loged in with success. Login token", token );
         return res.json( {
             success: true,
             token,
         } );
-    }
-    return res.json( {
-        success: false,
-        message: "Authentication failed. User not found.",
     } );
 };

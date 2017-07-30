@@ -18,4 +18,8 @@ userSchema.methods.setPass = function( password ) {
     this.password = md5( password );
 };
 
+userSchema.methods.checkPass = function( password ) {
+    return this.password === md5( password );
+};
+
 module.exports = mongoose.model( "User", userSchema );

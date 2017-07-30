@@ -3,4 +3,5 @@ module.exports = {
     port: 1234, // change with production port
     mongoUrl: process.env.CONNECTION_STRING,
     logLevel: process.env.LOG_LEVEL,
+    secret: process.env.SECRET,
 };
