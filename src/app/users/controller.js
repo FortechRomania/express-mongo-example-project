@@ -13,6 +13,7 @@ exports.register = ( req, res ) => {
         return;
     }
     user = new User( req.body );
+    user.setPass( req.body.password );
     user.save( function( err, savedUser ) {
         if ( err ) {
             logger.error( "Validation Error on user.saved: ", err );

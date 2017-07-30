@@ -1,4 +1,5 @@
 const jwt = require( "jsonwebtoken" );
+const md5 = require( "md5" );
 // const mongoose = require( "mongoose" );
 
 const logger = require( "../../utilities/logger" );
@@ -12,8 +13,7 @@ exports.login = ( req, res ) => {
         return res.status( 400 ).send( "password required" );
     }
 
-    const password = req.body.password;
-
+    const password = md5( req.body.password );
     if ( user ) {
         if ( user.password !== password ) {
             return res.json( {
