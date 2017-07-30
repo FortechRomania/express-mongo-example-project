@@ -1,3 +1,4 @@
+const md5 = require( "md5" );
 const jwt = require( "jsonwebtoken" );
 const mongoose = require( "mongoose" );
 
@@ -15,6 +16,7 @@ exports.register = ( req, res ) => {
         return;
     }
     user = new User( req.body );
+    user.setPass( req.body.password );
     user.save( function( err, savedUser ) {
         if ( err ) {
             logger.error( "Validation Error on user.saved: ", err );
@@ -34,8 +36,7 @@ exports.login = ( req, res ) => {
         return res.status( 400 ).send( "password required" );
     }
 
-    const password = req.body.password;
-
+    const password = md5( req.body.password );
     if ( user ) {
         if ( user.password !== password ) {
             return res.json( {
