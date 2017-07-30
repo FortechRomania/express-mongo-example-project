@@ -3,6 +3,7 @@ const bodyParser = require( "body-parser" );
 
 const config = require( "./config" );
 const customResponses = require( "./middlewares/customResponses" );
+const logger = require( "./utilities/logger" );
 
 const app = express( );
 const port = process.env.PORT || config.port;
@@ -21,7 +22,7 @@ app.use( ( req, res ) => {
 } );
 
 app.use( ( err, req, res, next ) => {
-    console.log( err.stack );
+    logger.error( err.stack );
     next( err );
 } );
 
@@ -34,5 +35,5 @@ app.use( ( err, req, res, next ) => { // eslint-disable-line no-unused-vars
 } );
 
 app.listen( port, ( ) => {
-    console.log( `Listening on port ${ port }` );
+    logger.info( `Listening on port ${ port }` );
 } );
