@@ -20,17 +20,18 @@ exports.register = ( req, res ) => {
 };
 
 exports.edit = ( req, res ) => {
-    const { user } = req;
-
-    repository.editUser( user, req.body )
-        .then( savedUser => res.success( extractObject(
-            savedUser,
-            [ "id", "name", "age", "sex", "username" ] ) ) )
-        .catch( ( err ) => res.send( err ) );
+    repository.findUser( req.user.id ).then( user =>
+        repository.editUser( user, req.body )
+            .then( savedUser => res.success( extractObject(
+                savedUser,
+                [ "id", "name", "age", "sex", "username" ] ) ) )
+            .catch( ( err ) => res.send( err ) ) );
 };
 
 exports.delete = ( req, res ) => {
     const { user } = req;
 
-    repository.deleteUser( user ).then( res.success ).catch( err => res.send( err ) );
+    repository.deleteUser( user )
+        .then( res.success )
+        .catch( err => res.send( err ) );
 };

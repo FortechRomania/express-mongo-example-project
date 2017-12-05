@@ -17,6 +17,7 @@ const saveUser = async ( data ) => {
 const editUser = async ( user, data ) => {
     const { name, sex, age } = data;
     const currentUser = user;
+
     try {
         currentUser.name = name;
         currentUser.sex = sex;
@@ -37,8 +38,14 @@ const deleteUser = async( user ) => {
     }
 };
 
+const findUser = async( id ) => {
+    const query = await User.findOne( { id } );
+    return query;
+};
+
 module.exports = {
     saveUser,
     editUser,
     deleteUser,
+    findUser,
 };
