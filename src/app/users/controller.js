@@ -29,9 +29,8 @@ exports.edit = ( req, res ) => {
 };
 
 exports.delete = ( req, res ) => {
-    const { user } = req;
-
-    repository.deleteUser( user )
-        .then( res.success )
-        .catch( err => res.send( err ) );
+    repository.findUser( req.user.id ).then( user =>
+        repository.deleteUser( user )
+            .then( res.success )
+            .catch( err => res.send( err ) ) );
 };
