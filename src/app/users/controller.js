@@ -1,55 +1,36 @@
-const mongoose = require( "mongoose" );
-
 const extractObject = require( "../../utilities" ).extractObject;
 const logger = require( "../../utilities/logger" );
-
-const User = mongoose.model( "User" );
+const repository = require( "./repository" );
 
 exports.register = ( req, res ) => {
-    let user = req.user;
+    const { user } = req;
+
     if ( user ) {
         logger.error( "User already exists" );
         res.preconditionFailed( "existing_user" );
         return;
     }
-    user = new User( req.body );
-    user.setPass( req.body.password );
-    user.save( function( err, savedUser ) {
-        if ( err ) {
-            logger.error( "Validation Error on user.saved: ", err );
-            res.validationError( err );
-        } else {
+    repository.saveUser( req.body )
+        .then( savedUser => {
             logger.info( "User saved with success!" );
             res.success( extractObject(
-                savedUser,
-                [ "id", "name", "age", "sex", "username" ] ) );
-        }
-    } );
+            savedUser,
+            [ "id", "name", "age", "sex", "username" ] ) );
+        } );
 };
 
 exports.edit = ( req, res ) => {
-    const user = req.user;
-    const name = req.body.name;
-    const sex = req.body.sex;
-    const age = req.body.age;
+    const { user } = req;
 
-    user.name = name;
-    user.sex = sex;
-    user.age = age;
-
-    user.save( function( err, savedUser ) {
-        if ( err ) {
-            return res.validationError( err );
-        }
-        return res.success( extractObject(
+    repository.editUser( user, req.body )
+        .then( savedUser => res.success( extractObject(
             savedUser,
-            [ "id", "name", "age", "sex" ] ) );
-    } );
+            [ "id", "name", "age", "sex", "username" ] ) ) )
+        .catch( ( err ) => res.send( err ) );
 };
 
 exports.delete = ( req, res ) => {
-    const user = req.user;
+    const { user } = req;
 
-    user.remove( );
-    res.success( );
+    repository.deleteUser( user ).then( res.success ).catch( err => res.send( err ) );
 };

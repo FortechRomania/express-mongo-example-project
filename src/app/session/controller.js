@@ -1,7 +1,5 @@
 const jwt = require( "jsonwebtoken" );
-const mongoose = require( "mongoose" );
-
-const User = mongoose.model( "User" );
+const repository = require( "./repository" );
 
 const config = require( "../../config" );
 const logger = require( "../../utilities/logger" );
@@ -16,15 +14,7 @@ exports.login = ( req, res ) => {
         res.preconditionFailed( "username required" );
         return;
     }
-
-    User.findOne( { username: req.body.username }, function( err, user ) {
-        if ( err ) {
-            return res.json( {
-                success: false,
-                message: "Authentication failed. User not found.",
-            } );
-        }
-
+    repository.findUser( req.body ).then( user => {
         if ( !user.checkPass( req.body.password ) ) {
             return res.json( {
                 success: false,
@@ -38,5 +28,5 @@ exports.login = ( req, res ) => {
             success: true,
             token,
         } );
-    } );
+    } ).catch( err => res.send( err ) );
 };
