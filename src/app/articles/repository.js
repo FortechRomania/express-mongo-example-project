@@ -19,7 +19,7 @@ const findArticles = async () => {
 };
 
 const findDetails = async ( id ) => {
-    const query = await Article.findOne( { id } );
+    const query = await Article.findOne( { _id: id } );
     return query;
 };
 
