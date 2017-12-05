@@ -1,20 +1,13 @@
-const mongoose = require( "mongoose" );
 const utilities = require( "../../utilities" );
-
-const Article = mongoose.model( "Article" );
+const repository = require( "./repository" );
 
 exports.create = ( req, res ) => {
-    const user = req.user;
-    const article = new Article( req.body );
-    article.authodId = user.id;
-    article.save( function( err, createdArticle ) {
-        if ( err ) {
-            return res.validationError( err );
-        }
-        return res.success( utilities.extractObject(
+    const { user } = req;
+
+    repository.createArticle( user, req.body )
+        .then( createdArticle => res.success( utilities.extractObject(
             createdArticle,
-            [ "id", "title", "body" ] ) );
-    } );
+            [ "id", "title", "body" ] ) ) );
 };
 
 exports.update = ( req, res ) => {
@@ -26,19 +19,13 @@ exports.delete = ( req, res ) => {
 };
 
 exports.list = ( req, res ) => {
-    Article.find( ( err, articles ) => {
-        if ( err ) {
-            return res.notFound( );
-        }
-        return res.success( articles );
-    } );
+    repository.findArticles()
+        .then( articles => res.success( articles ) )
+        .catch( err => res.send( err ) );
 };
 
 exports.detail = ( req, res ) => {
-    Article.findOne( { id: req.params.id }, function( err, articles ) {
-        if ( err ) {
-            return res.notFound( );
-        }
-        return res.success( articles );
-    } );
+    repository.findDetails( req.params.id )
+        .then( article => res.success( article ) )
+        .catch( err => res.send( err ) );
 };
