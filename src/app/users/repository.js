@@ -16,10 +16,11 @@ const saveUser = async ( data ) => {
 
 const editUser = async ( user, data ) => {
     const { name, sex, age } = data;
+    const currentUser = user;
     try {
-        user.name = name;
-        user.sex = sex;
-        user.age = age;
+        currentUser.name = name;
+        currentUser.sex = sex;
+        currentUser.age = age;
         const queryResult = await user.save( );
         return queryResult;
     } catch ( err ) {
