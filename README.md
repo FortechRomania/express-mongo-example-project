@@ -3,29 +3,27 @@ This project is an application skeleton for a typical [Node.js](https://nodejs.o
 [![Build Status](https://travis-ci.org/FortechRomania/express-mongo-example-project.svg?branch=master)](https://travis-ci.org/FortechRomania/express-mongo-example-project)
 
 ## Getting Started
-To get you started you can simply clone the node-seed repository and install the dependencies:
+To get you started you can simply clone the repository:
+
+```
+git clone https://github.com/FortechRomania/express-mongo-example-project
+```
+and install the dependencies
+```
+npm install
+```
 
 ### Prerequisites
-You need git to clone the node-seed repository. You can get git from
+You need git to clone the repository. You can get git from
 [http://git-scm.com/](http://git-scm.com/).
 
-A number of node.js tools is necessary to initialize and test node-seed. You must have node.js and its package manager (npm) installed. You can get them from  [http://nodejs.org/](http://nodejs.org/). The tools/modules used in this project are listed in package.json and include express, mongodb and mongoose.
+A number of node.js tools is necessary to initialize and test the project. You must have node.js and its package manager (npm) installed. You can get them from  [http://nodejs.org/](http://nodejs.org/). The tools/modules used in this project are listed in package.json and include express, mongodb and mongoose.
 
 #### MongoDB
 The project uses MongoDB as a database. If you are on Mac and using Homebrew package manager the installation is as simple as `brew install mongodb`.
 
 #### Apidoc
 To install run `npm install apidoc -g`.
-
-
-### Clone node-seed
-Clone the node-seed repository using [git][git]:
-
-    git clone "path from git"
-
-### Install node-seed project dependencies
-
-    npm install
 
 ### Start the MongoDB server
 First we need to create the `db` directory where the database files will live in. In your terminal navigate to the `root` of your system by doing `cd ..` until you reach the top directory. You can create the directory by running `sudo mkdir -p /data/db`. Now open a different tab in your terminal and run `mongod` to start the Mongo server.
