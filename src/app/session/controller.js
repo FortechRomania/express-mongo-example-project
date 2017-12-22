@@ -4,29 +4,26 @@ const repository = require( "./repository" );
 const config = require( "../../config" );
 const logger = require( "../../utilities/logger" );
 
-exports.login = ( req, res ) => {
-    if ( !req.body.password ) {
-        res.preconditionFailed( "password required" );
+exports.login = async ( req, res ) => {
+    if ( !req.body.password || !req.body.username ) {
+        res.preconditionFailed( "Credentials required" );
         return;
     }
 
-    if ( !req.body.username ) {
-        res.preconditionFailed( "username required" );
-        return;
-    }
-    repository.findUser( req.body ).then( user => {
-        if ( !user.checkPass( req.body.password ) ) {
-            return res.json( {
-                success: false,
-                message: "Authentication failed. Wrong password.",
-            } );
+    try {
+        const user = await repository.findUser( req.body );
+        if ( !user || !user.checkPass( req.body.password ) ) {
+            res.json( { success: false, message: "Authentication failed." } );
+            return;
         }
 
         const token = jwt.sign( user.toObject(), config.secret, { expiresIn: 1440 } );
         logger.info( "User loged in with success. Login token", token );
-        return res.json( {
+        res.json( {
             success: true,
             token,
         } );
-    } ).catch( err => res.send( err ) );
+    } catch ( err ) {
+        res.send( err );
+    }
 };

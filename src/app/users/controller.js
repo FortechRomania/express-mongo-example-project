@@ -1,8 +1,8 @@
-const extractObject = require( "../../utilities" ).extractObject;
+const extractObject = require( "../../utilities/" ).extractObject;
 const logger = require( "../../utilities/logger" );
 const repository = require( "./repository" );
 
-exports.register = ( req, res ) => {
+exports.register = async ( req, res ) => {
     const { user } = req;
 
     if ( user ) {
@@ -10,27 +10,43 @@ exports.register = ( req, res ) => {
         res.preconditionFailed( "existing_user" );
         return;
     }
-    repository.saveUser( req.body )
-        .then( savedUser => {
-            logger.info( "User saved with success!" );
-            res.success( extractObject(
+
+    try {
+        const savedUser = await repository.saveUser( req.body );
+        console.log( savedUser );
+        res.success( extractObject(
             savedUser,
-            [ "id", "name", "age", "sex", "username" ] ) );
-        } );
+            [ "id", "username" ],
+        ) );
+    } catch ( err ) {
+        res.send( err );
+    }
 };
 
-exports.edit = ( req, res ) => {
-    repository.findUser( req.user.id ).then( user =>
-        repository.editUser( user, req.body )
-            .then( savedUser => res.success( extractObject(
-                savedUser,
-                [ "id", "name", "age", "sex", "username" ] ) ) )
-            .catch( ( err ) => res.send( err ) ) );
+exports.edit = async ( req, res ) => {
+    try {
+        const user = await repository.findUser( req.user.id );
+        const editedUser = await repository.editUser( user, req.body );
+        res.success( extractObject(
+            editedUser,
+            [ "id", "username" ],
+        ) );
+    } catch ( err ) {
+        res.send( err );
+    }
 };
 
-exports.delete = ( req, res ) => {
-    repository.findUser( req.user.id ).then( user =>
-        repository.deleteUser( user )
-            .then( res.success )
-            .catch( err => res.send( err ) ) );
+exports.delete = async ( req, res ) => {
+    try {
+        const user = await repository.findUser( req.user.id );
+        const deletedUser = await repository.deleteUser( user, req.body );
+        console.log( deletedUser );
+        res.success( extractObject(
+            deletedUser,
+            [ "id", "username" ],
+        ) );
+    } catch ( err ) {
+        console.log( err );
+        res.send( err );
+    }
 };

@@ -2,46 +2,25 @@ const mongoose = require( "mongoose" );
 
 const User = mongoose.model( "User" );
 
-const saveUser = async ( data ) => {
-    try {
-        const user = new User( data );
-        user.setPass( data.password );
-        const queryResult = await user.save( );
-
-        return queryResult;
-    } catch ( err ) {
-        return err;
-    }
+const saveUser = ( data ) => {
+    const user = new User( data );
+    user.setPass( data.password );
+    return user.save();
 };
 
-const editUser = async ( user, data ) => {
+const editUser = ( user, data ) => {
     const { name, sex, age } = data;
     const currentUser = user;
 
-    try {
-        currentUser.name = name;
-        currentUser.sex = sex;
-        currentUser.age = age;
-        const queryResult = await user.save( );
-        return queryResult;
-    } catch ( err ) {
-        return err;
-    }
+    currentUser.name = name;
+    currentUser.sex = sex;
+    currentUser.age = age;
+    return user.save( );
 };
 
-const deleteUser = async( user ) => {
-    try {
-        const queryResult = await user.remove();
-        return queryResult;
-    } catch ( err ) {
-        return err;
-    }
-};
+const deleteUser = ( user ) => user.remove();
 
-const findUser = async( id ) => {
-    const query = await User.findOne( { id } );
-    return query;
-};
+const findUser = ( id ) => User.findOne( { id } );
 
 module.exports = {
     saveUser,

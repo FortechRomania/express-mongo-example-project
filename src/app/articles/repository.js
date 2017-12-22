@@ -5,23 +5,16 @@ const User = mongoose.model( "User" );
 
 const createArticle = async ( user, data ) => {
     const { id } = user;
-    try {
-        const article = new Article( data );
-        article.authorId = await User.findOne( { id } );
-        const query = await article.save();
-        return query;
-    } catch ( err ) { return err; }
-};
 
-const findArticles = async () => {
-    const query = await Article.find( );
+    const article = new Article( data );
+    article.authorId = await User.findOne( { id } );
+    const query = await article.save();
     return query;
 };
 
-const findDetails = async ( id ) => {
-    const query = await Article.findOne( { _id: id } );
-    return query;
-};
+const findArticles = () => Article.find( );
+
+const findDetails = ( id ) => Article.findOne( { _id: id } );
 
 module.exports = {
     createArticle,
