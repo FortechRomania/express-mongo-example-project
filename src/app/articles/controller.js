@@ -5,6 +5,7 @@ exports.create = async( req, res ) => {
     try {
         const { user } = req;
         const article = await repository.createArticle( user, req.body );
+        
         res.success( utilities.extractObject(
         article,
         [ "id", "title", "body" ],
