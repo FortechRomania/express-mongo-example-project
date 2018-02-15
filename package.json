@@ -25,7 +25,7 @@
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "express-jwt": "^5.1.0",
-    "jsonwebtoken": "^7.1.9",
+    "jsonwebtoken": "^8.0.0",
     "md5": "^2.2.1",
     "mongodb": "^2.2.10",
     "mongoose": "^4.6.1",
