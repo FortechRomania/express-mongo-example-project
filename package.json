@@ -8,7 +8,9 @@
     "start": "nodemon --watch src src/index.js",
     "doc": "apidoc -i src/ -o doc",
     "lint": "eslint src",
-    "ci": "npm run lint"
+    "ci": "npm run lint",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -30,10 +32,12 @@
     "mongodb": "^2.2.30",
     "mongoose": "^5.7.5",
     "save": "^2.3.0",
-    "winston": "^2.3.1"
+    "winston": "^2.3.1",
+    "snyk": "^1.316.1"
   },
   "devDependencies": {
     "babel-eslint": "^6.1.2",
     "eslint-config-fortech": "^2.0.2"
-  }
+  },
+  "snyk": true
 }
