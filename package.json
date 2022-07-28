@@ -28,7 +28,7 @@
     "jsonwebtoken": "^8.0.0",
     "md5": "^2.2.1",
     "mongodb": "^2.2.30",
-    "mongoose": "^5.7.5",
+    "mongoose": "^6.4.6",
     "save": "^2.3.0",
     "winston": "^2.3.1"
   },
